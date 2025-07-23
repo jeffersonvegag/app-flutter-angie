@@ -1,0 +1,20 @@
+services:
+  app-mobile-angie-backend:
+    build: ./backend
+    container_name: app-mobile-angie-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=sqlite:///./app.db
+      - SECRET_KEY=your_secret_key_here
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  app-mobile-angie-frontend:
+    build: ./frontend
+    container_name: app-mobile-angie-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - app-mobile-angie-backend
